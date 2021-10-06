@@ -1,16 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Movement : MonoBehaviour
 {
     Rigidbody rigidbody;
     public float speed = 10.0f;
+    int Count = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+    }
+
+    void Update()
+    {
+        if(Count == 10)
+        SceneManager.LoadScene("End");
     }
 
     void FixedUpdate()
@@ -32,5 +40,15 @@ public class Movement : MonoBehaviour
             rigidbody.AddForce(Vector3.right * speed);
         }
 
+    }
+
+    void OnCollisionEnter(Collision CoinCol)
+    {
+        Coin coin = CoinCol.gameObject.GetComponent<Coin>();
+        if (coin)
+        {
+            Destroy(CoinCol.gameObject);
+            Count = Count + 1;
+        }
     }
 }
